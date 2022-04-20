@@ -1,60 +1,21 @@
-const {
-  createUser,
-  findUserById,
-  updateUser,
-} = require("../../db/controller/user");
+const { findUserById, updateUser } = require("../../db/controller/user");
 const { Router } = require("express");
-const crypto = require("crypto");
-const { registerAuth } = require("../../firebase/authentication");
 
 const userRoutes = Router();
 //create user
-userRoutes.post("/register", (req, res) => {
-  const user = req.body;
-  try {
-    createUser({
-      id: crypto.randomUUID(),
-      ...req.body,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-  } catch (err) {
-    console.log(err.message);
-    throw new Error("Error on registration: " + err.message);
-  }
-  res.status(201).send(req.body);
-});
-
-//authenticate user
-userRoutes.post("/auth/:id", (req, res) => {
-  try {
-    const user = findUserById(req.params.id).then((user) => {
-      const auth = registerAuth(user.dataValues.email, "password").then(
-        (data) => {
-          res.status(200).send(JSON.stringify(data));
-          console.log(data.stsTokenManager.accessToken);
-          const payload = {
-            apiKey: data.stsTokenManager.accessToken,
-            updatedAt: new Date(),
-          };
-          updateUser(req.params.id, payload)
-            .then((data) => console.log(data))
-            .catch((err) => console.log(err.message));
-        }
-      );
-    });
-  } catch (err) {
-    throw new Error("Error: " + err.message);
-  }
-  //AQUI ELE CRIA A KEY A PARTIR DA UUID
-});
 
 //get user
 userRoutes.get("/:id", (req, res) => {
-  const user = findUserById(req.params.id).then((user) =>
-    res.status(200).send(user)
-  );
-  console.log(user);
+  const user = findUserById(req.params.id).then((user) => {
+    console.log(user.dataValues);
+    res.status(200).send({
+      name: user.dataValues.name,
+      email: user.dataValues.email,
+      coursesAlreadyMade: user.dataValues.coursesAlreadyMade,
+      schedule: user.dataValues.schedule,
+      apiKey: user.dataValues.apiKey,
+    });
+  });
   return user;
 });
 
