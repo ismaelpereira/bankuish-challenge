@@ -96,6 +96,7 @@ userRoutes.post("/schedule/", (req, res) => {
   );
   updateUser(req.body.userId, {
     schedule: coursesNotMade[0],
+    pdatedAt: new Date(),
   });
 
   res.status(200).send({
@@ -126,6 +127,7 @@ userRoutes.put("/schedule/:id", (req, res) => {
 
   const updatedUser = updateUser(req.param.id, {
     schedule: courses[courses.indexOf(coursesMade[coursesMade.length - 1]) + 1],
+    pdatedAt: new Date(),
   });
 
   res.status(200).send({

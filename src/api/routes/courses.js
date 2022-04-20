@@ -1,5 +1,4 @@
 const { Router } = require("express");
-
 const {
   createCourse,
   getAllCourses,
@@ -7,21 +6,24 @@ const {
   deleteCourseById,
   findCourseById,
 } = require("../../db/controller/courses");
+const crypto = require("crypto");
 
 const courseRoutes = Router();
 
 //get courses
 courseRoutes.get("/", (req, res) => {
-  const courses = getAllCourses().then(() => courses);
-  res.status(200).send(courses);
+  const courses = getAllCourses().then((course) =>
+    res.status(200).send(course)
+  );
 });
 //create courses
 courseRoutes.post("/", (req, res) => {
   const course = createCourse({
     id: crypto.randomUUID(),
     ...req.body,
-  });
-  res.status(201).send(course);
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }).then((course) => res.status(201).send(course));
 });
 //get course
 courseRoutes.get("/:id", (req, res) => {

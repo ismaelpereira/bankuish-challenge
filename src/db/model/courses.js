@@ -19,6 +19,7 @@ Course.init(
     },
     requiredCourse: {
       type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   { sequelize: sequelizeConnection }
