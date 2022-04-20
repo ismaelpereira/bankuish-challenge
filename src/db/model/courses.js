@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize/types";
-import User from "./user";
+const { DataTypes, Model } = require("sequelize");
+const User = require("./user");
 
 class Course extends Model {
   id;
@@ -23,6 +23,4 @@ Course.init(
   { sequelize: sequelizeConnection }
 );
 
-Course.belongsToMany(User);
-
-export default Course;
+module.exports = Course;

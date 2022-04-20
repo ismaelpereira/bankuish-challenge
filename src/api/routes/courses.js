@@ -23,9 +23,24 @@
 //   },
 //  ],
 //};
+const { Router } = require("express");
+import { createCourse, getAllCourses } from "../../db/controller/courses";
+
+const courseRoutes = Router();
 
 //get courses
+courseRoutes.get((req, res) => {
+  const courses = getAllCourses().then(() => courses);
+  res.status(200).send(courses);
+});
 //create courses
+courseRoutes.post((req, res) => {
+  const course = createCourse({
+    id: crypto.randomUUID(),
+    ...req.body,
+  });
+});
 //get course
+
 //update course
 //delete course

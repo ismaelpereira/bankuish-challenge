@@ -1,11 +1,11 @@
-import User from "../model/user";
+const { User } = require("../model/user");
 
-export const createUser = async (payload) => {
+module.exports = createUser = async (payload) => {
   const user = await User.create(payload);
   return user;
 };
 
-export const updateUser = async (id, payload) => {
+module.exports = updateUser = async (id, payload) => {
   const user = await User.findByPk(id);
   if (!user) {
     throw new Error("User not Found");
@@ -14,7 +14,7 @@ export const updateUser = async (id, payload) => {
   return updatedUser;
 };
 
-export const deleteUserById = async (id) => {
+module.exports = deleteUserById = async (id) => {
   const deletedUser = await User.destroy({
     where: { id },
   });
@@ -22,7 +22,7 @@ export const deleteUserById = async (id) => {
   return !!deletedUser;
 };
 
-export const findUserById = async (id) => {
+module.exports = findUserById = async (id) => {
   const user = await User.findByPk(id);
 
   if (!user) {
@@ -32,6 +32,6 @@ export const findUserById = async (id) => {
   return user;
 };
 
-export const getAllUsers = async () => {
+module.exports = getAllUsers = async () => {
   return await User.findAll();
 };

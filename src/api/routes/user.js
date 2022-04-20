@@ -1,13 +1,19 @@
-import { createUser, findUserById, updateUser } from "../../db/controller/user";
-
+const {
+  createUser,
+  findUserById,
+  updateUser,
+} = require("../../db/controller/user");
 const { Router } = require("express");
 
 const userRoutes = Router();
-
 //create user
 userRoutes.post("/register", (req, res) => {
+  const user = req.body;
   try {
-    createUser(req.body);
+    createUser({
+      id: crypto.randomUUID(),
+      ...req.body,
+    });
   } catch (err) {
     throw new Error("Error on registration: ", err);
   }
@@ -87,5 +93,3 @@ userRoutes.post("/schedule/:id", (req, res) => {
 //finish course
 
 //schedule course
-
-export default userRoutes;

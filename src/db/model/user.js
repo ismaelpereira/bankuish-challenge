@@ -1,8 +1,7 @@
-import { DataTypes, Model } from "sequelize/types";
-import { sequelizeConnection } from "../config";
-import Course from "./courses";
+const { DataTypes, Sequelize } = require("sequelize");
+const { sequelizeConnection } = require("../config");
 
-class User extends Model {
+class User extends Sequelize.Model {
   id;
   name;
   email;
@@ -39,6 +38,4 @@ User.init(
   { sequelize: sequelizeConnection }
 );
 
-User.hasMany(Course);
-
-export default User;
+module.exports = User;

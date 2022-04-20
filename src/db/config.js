@@ -1,18 +1,22 @@
-import { Sequelize } from "sequelize/types";
+const { Sequelize } = require("sequelize");
 
-const sqlite3 = require("sqlite3");
+const mysql = require("mysql2");
 
 const dbName = "schedule_courses";
-const dbUser = "ismaelpereira";
+const dbUser = "ismael";
 const dbHost = "localhost";
-const dbDriver = sqlite3;
+const dbDriver = "mysql";
+const dbPassword = "admin";
 
-const dbPassword = "root";
-
-export const sequelizeConnection = new Sequelize(dbName, dbUser, dbPassword, {
-  host: dbHost,
-  dialect: dbDriver,
-});
+module.exports = sequelizeConnection = new Sequelize(
+  dbName,
+  dbUser,
+  dbPassword,
+  {
+    host: dbHost,
+    dialect: dbDriver,
+  }
+);
 
 sequelizeConnection.sync().then(() => {
   console.log("db connected ");
