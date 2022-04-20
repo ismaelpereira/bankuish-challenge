@@ -1,11 +1,11 @@
-import Course from "../model/courses";
+const Course = require("../model/courses");
 
-export const createCourse = async (payload) => {
+module.exports = createCourse = async (payload) => {
   const course = Course.create(payload);
   return course;
 };
 
-export const updateCourse = async (id, payload) => {
+module.exports = updateCourse = async (id, payload) => {
   const course = Course.findByPk(id);
   if (!course) {
     throw new Error("Course not found");
@@ -15,7 +15,7 @@ export const updateCourse = async (id, payload) => {
   return updatedCourse;
 };
 
-export const deleteCourseById = async (id) => {
+module.exports = deleteCourseById = async (id) => {
   const deletedCourse = await Course.destroy({
     where: { id },
   });
@@ -23,7 +23,7 @@ export const deleteCourseById = async (id) => {
   return !!deletedCourse;
 };
 
-export const findCourseById = async (id) => {
+module.exports = findCourseById = async (id) => {
   const course = await Course.findByPk(id);
 
   if (!course) {
@@ -32,6 +32,6 @@ export const findCourseById = async (id) => {
   return course;
 };
 
-export const getAllCourses = async () => {
+module.exports = getAllCourses = async () => {
   return await Course.findAll();
 };

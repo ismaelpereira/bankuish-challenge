@@ -9,7 +9,7 @@
 const express = require("express");
 const cors = require("cors");
 const authMiddleware = require("./auth-middleware");
-const { default: router } = require("./api/routes");
+const router = require("./api/routes");
 
 const app = express();
 

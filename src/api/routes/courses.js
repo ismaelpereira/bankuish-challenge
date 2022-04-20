@@ -24,7 +24,13 @@
 //  ],
 //};
 const { Router } = require("express");
-import { createCourse, getAllCourses } from "../../db/controller/courses";
+
+const {
+  createCourse,
+  getAllCourses,
+  updateCourse,
+  deleteCourse,
+} = require("../../db/controller/courses");
 
 const courseRoutes = Router();
 
@@ -44,3 +50,4 @@ courseRoutes.post((req, res) => {
 
 //update course
 //delete course
+module.exports = courseRoutes;

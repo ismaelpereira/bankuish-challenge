@@ -1,5 +1,5 @@
 const { DataTypes, Sequelize } = require("sequelize");
-const { sequelizeConnection } = require("../config");
+const sequelizeConnection = require("../config");
 
 class User extends Sequelize.Model {
   id;
@@ -23,15 +23,15 @@ User.init(
       type: DataTypes.STRING,
     },
     coursesAlreadyMade: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,
       allowNull: true,
     },
     schedule: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,
       allowNull: true,
     },
     apiKey: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },

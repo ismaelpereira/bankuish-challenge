@@ -93,3 +93,4 @@ userRoutes.post("/schedule/:id", (req, res) => {
 //finish course
 
 //schedule course
+module.exports = userRoutes;

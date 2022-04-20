@@ -1,7 +1,8 @@
-const { DataTypes, Model } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
+const sequelizeConnection = require("../config");
 const User = require("./user");
 
-class Course extends Model {
+class Course extends Sequelize.Model {
   id;
   name;
   requiredCourse;
