@@ -2,6 +2,13 @@ const { getAuth } = require("firebase/auth");
 const app = require("./firebase/index");
 const admin = require("firebase-admin");
 
+const credentials = require("./firebase/credentials.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(credentials),
+  databaseURL: "https://bankuish-challenge-ea8d9.firebaseapp.com",
+});
+
 function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
   if (!headerToken) {
