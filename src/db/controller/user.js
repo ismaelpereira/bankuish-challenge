@@ -1,11 +1,11 @@
 const User = require("../model/user");
 
-module.exports = createUser = async (payload) => {
+const createUser = async (payload) => {
   const user = await User.create(payload);
   return user;
 };
 
-module.exports = updateUser = async (id, payload) => {
+const updateUser = async (id, payload) => {
   const user = await User.findByPk(id);
   if (!user) {
     throw new Error("User not Found");
@@ -14,7 +14,7 @@ module.exports = updateUser = async (id, payload) => {
   return updatedUser;
 };
 
-module.exports = deleteUserById = async (id) => {
+const deleteUserById = async (id) => {
   const deletedUser = await User.destroy({
     where: { id },
   });
@@ -22,7 +22,7 @@ module.exports = deleteUserById = async (id) => {
   return !!deletedUser;
 };
 
-module.exports = findUserById = async (id) => {
+const findUserById = async (id) => {
   const user = await User.findByPk(id);
 
   if (!user) {
@@ -32,6 +32,14 @@ module.exports = findUserById = async (id) => {
   return user;
 };
 
-module.exports = getAllUsers = async () => {
+const getAllUsers = async () => {
   return await User.findAll();
+};
+
+module.exports = {
+  createUser: createUser,
+  updateUser: updateUser,
+  deleteUserById: deleteUserById,
+  findUserById: findUserById,
+  getAllUsers: getAllUsers,
 };

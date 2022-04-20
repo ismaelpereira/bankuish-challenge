@@ -1,11 +1,11 @@
 const Course = require("../model/courses");
 
-module.exports = createCourse = async (payload) => {
+const createCourse = async (payload) => {
   const course = Course.create(payload);
   return course;
 };
 
-module.exports = updateCourse = async (id, payload) => {
+const updateCourse = async (id, payload) => {
   const course = Course.findByPk(id);
   if (!course) {
     throw new Error("Course not found");
@@ -15,7 +15,7 @@ module.exports = updateCourse = async (id, payload) => {
   return updatedCourse;
 };
 
-module.exports = deleteCourseById = async (id) => {
+const deleteCourseById = async (id) => {
   const deletedCourse = await Course.destroy({
     where: { id },
   });
@@ -23,7 +23,7 @@ module.exports = deleteCourseById = async (id) => {
   return !!deletedCourse;
 };
 
-module.exports = findCourseById = async (id) => {
+const findCourseById = async (id) => {
   const course = await Course.findByPk(id);
 
   if (!course) {
@@ -32,6 +32,14 @@ module.exports = findCourseById = async (id) => {
   return course;
 };
 
-module.exports = getAllCourses = async () => {
+const getAllCourses = async () => {
   return await Course.findAll();
+};
+
+module.exports = {
+  createCourse: createCourse,
+  updateCourse: updateCourse,
+  deleteCourseById: deleteCourseById,
+  findCourseById: findCourseById,
+  getAllCourses: getAllCourses,
 };

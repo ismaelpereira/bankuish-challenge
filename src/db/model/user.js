@@ -31,7 +31,7 @@ User.init(
       allowNull: true,
     },
     apiKey: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       allowNull: true,
     },
   },

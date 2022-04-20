@@ -4,6 +4,8 @@ const {
   updateUser,
 } = require("../../db/controller/user");
 const { Router } = require("express");
+const crypto = require("crypto");
+const { registerAuth } = require("../../firebase/authentication");
 
 const userRoutes = Router();
 //create user
@@ -13,47 +15,48 @@ userRoutes.post("/register", (req, res) => {
     createUser({
       id: crypto.randomUUID(),
       ...req.body,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   } catch (err) {
-    throw new Error("Error on registration: ", err);
+    console.log(err.message);
+    throw new Error("Error on registration: " + err.message);
   }
   res.status(201).send(req.body);
 });
 
 //authenticate user
 userRoutes.post("/auth/:id", (req, res) => {
-  const uuid = crypto.randomUUID();
   try {
-    const user = findUserById(req.params.id).then(() => user);
-    const updatedUser = updateUser(user.id, {
-      apiKey: uuid,
-    }).then(() => updatedUser);
+    const user = findUserById(req.params.id).then((user) => {
+      const auth = registerAuth(user.dataValues.email, "password").then(
+        (data) => {
+          res.status(200).send(JSON.stringify(data));
+          console.log(data.stsTokenManager.accessToken);
+          const payload = {
+            apiKey: data.stsTokenManager.accessToken,
+            updatedAt: new Date(),
+          };
+          updateUser(req.params.id, payload)
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err.message));
+        }
+      );
+    });
   } catch (err) {
-    throw new Error("Error: ", err);
+    throw new Error("Error: " + err.message);
   }
   //AQUI ELE CRIA A KEY A PARTIR DA UUID
-  res.status(200).send({
-    message: `Your API Key is ${uuid}`,
-  });
-});
-
-//get apiKey
-userRoutes.get("/auth/:id", (req, res) => {
-  try {
-    const user = findUserById(req.params.id).then(() => user);
-    req.statusCode(200).send(user);
-  } catch (err) {
-    throw new Error("Error: ", err);
-  }
 });
 
 //get user
-userRoutes.get("/user/:id", (req, res) =>
-  res.status(200).send(() => {
-    const user = findUserById(req.params.id).then(() => user);
-    return user;
-  })
-);
+userRoutes.get("/:id", (req, res) => {
+  const user = findUserById(req.params.id).then((user) =>
+    res.status(200).send(user)
+  );
+  console.log(user);
+  return user;
+});
 
 //create schedule
 userRoutes.post("/schedule/:id", (req, res) => {

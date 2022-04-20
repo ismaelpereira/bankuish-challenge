@@ -17,6 +17,8 @@ app.use(express.json());
 app.use(cors());
 app.use(router);
 
+// app.use("/api/auth", authMiddleware);
+
 app.get("/", (req, res) => {
   res.status(200).send({
     message: "Hello World",
