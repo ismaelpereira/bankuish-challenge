@@ -58,8 +58,8 @@ userRoutes.get("/:id", (req, res) => {
   return user;
 });
 
-//create schedule
-userRoutes.post("/schedule/:id", (req, res) => {
+//create schedule -> HERE you send the payload JSON on the PDF
+userRoutes.post("/schedule/", (req, res) => {
   const map = {
     Finance: 0,
     Investment: 1,
@@ -83,8 +83,19 @@ userRoutes.post("/schedule/:id", (req, res) => {
 
   sortedCourses.map((course) => ordenedCourses.push(course.desiredCourse));
 
-  updateUser(req.params.id, {
-    schedule: ordenedCourses[0],
+  let coursesMade = [];
+
+  const user = findUserById(rq.body.userId)
+    .then((user) => {
+      coursesMade = user.coursesAlreadyMade.split(",");
+    })
+    .catch((user) => console.log("User does not exists"));
+
+  const coursesNotMade = ordenedCourses.filter(
+    (course) => coursesMade.indexOf(course) === -1
+  );
+  updateUser(req.body.userId, {
+    schedule: coursesNotMade[0],
   });
 
   res.status(200).send({
@@ -94,6 +105,36 @@ userRoutes.post("/schedule/:id", (req, res) => {
 });
 
 //finish course
+userRoutes.put("/schedule/:id", (req, res) => {
+  const courses = [
+    "Finance",
+    "Investment",
+    "InvestmentManagement",
+    "PortfolioTheories",
+    "InvestmentStyle",
+    "PortfolioConstruction",
+  ];
+
+  let coursesMade = [];
+
+  const user = findUserById(rq.body.userId)
+    .then((user) => {
+      coursesMade = user.coursesAlreadyMade.split(",");
+      coursesMade.push(user.schedule);
+    })
+    .catch((user) => console.log("User does not exists"));
+
+  const updatedUser = updateUser(req.param.id, {
+    schedule: courses[courses.indexOf(coursesMade[coursesMade.length - 1]) + 1],
+  });
+
+  res.status(200).send({
+    message: `You finish course ${courseMade[coursesMade.length - 1]}.\n
+    You will start ${
+      courses[courses.indexOf(coursesMade[coursesMade.length - 1]) + 1]
+    }`,
+  });
+});
 
 //schedule course
 module.exports = userRoutes;
