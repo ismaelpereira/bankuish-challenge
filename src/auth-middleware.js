@@ -1,4 +1,6 @@
-const firebase = require("./firebase/index");
+const { getAuth } = require("firebase/auth");
+const app = require("./firebase/index");
+const admin = require("firebase-admin");
 
 function authMiddleware(request, response, next) {
   const headerToken = request.headers.authorization;
@@ -11,11 +13,26 @@ function authMiddleware(request, response, next) {
   }
 
   const token = headerToken.split(" ")[1];
-  firebase
-    .auth()
-    .verifyIdToken(token)
-    .then(() => next())
-    .catch(() => response.send({ message: "Could not authorize" }).status(403));
+
+  const auth = getAuth(app);
+
+  if (request.headers.authorization) {
+    try {
+      admin
+        .auth(app)
+        .verifyIdToken(token)
+        .then(() => {
+          next();
+        })
+        .catch(() => {
+          res.status(403).send("Unauthorized");
+        });
+    } catch (err) {
+      throw new Error(err);
+    }
+  } else {
+    res.status(403).send("Unauthorized");
+  }
 }
 
 module.exports = authMiddleware;
