@@ -3,14 +3,13 @@ const cors = require("cors");
 const crypto = require("crypto");
 const authMiddleware = require("./auth-middleware");
 const router = require("./api/routes");
-const { createUser } = require("./db/controller/user");
+const { createUser, findUserById } = require("./db/controller/user");
+const { registerAuth } = require("./firebase/authentication");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use("/user", authMiddleware);
-app.use("/course", authMiddleware);
 app.use(router);
 
 app.get("/", (req, res) => {

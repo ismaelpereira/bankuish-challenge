@@ -15,3 +15,5 @@ You need to run
 `npm install`
 
 Then, you need to configure your project in firebase. You can see the tutorial [here](https://firebase.google.com/docs/web/setup?hl=en-us) and create a SQL Database and check the config on `./db/config.ts`
+
+For create a user you need to post on route `/register` and authenticate by `/auth/:id`

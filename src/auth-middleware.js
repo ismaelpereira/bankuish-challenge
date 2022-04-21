@@ -26,7 +26,7 @@ function authMiddleware(request, response, next) {
   if (request.headers.authorization) {
     try {
       admin
-        .auth(app)
+        .auth()
         .verifyIdToken(token)
         .then(() => {
           next();
